@@ -28,13 +28,13 @@ include_once "config.php";
 
     // Menu-item   insert
     $txt = "
-    <h1>Crud Fietsen</h1>
+    <h1>Crud bieren</h1>
     <nav>
 		<a href='insert.php'>Toevoegen nieuwe fiets</a>
     </nav><br>";
     echo $txt;
 
-    // Haal alle fietsen record uit de tabel 
+    // Haal alle bieren record uit de tabel 
     $result = getData(CRUD_TABLE);
 
     //print table
@@ -60,7 +60,7 @@ include_once "config.php";
     return $result;
  }
 
- // selecteer de rij van de opgeven id uit de table fietsen
+ // selecteer de rij van de opgeven id uit de table bieren
  function getRecord($id){
     // Connect database
     $conn = connectDb();

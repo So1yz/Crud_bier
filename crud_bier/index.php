@@ -9,7 +9,7 @@
 <body>
 
     <?php
-    // functie: Programma CRUD fietsen
+    // functie: Programma CRUD bieren
     // auteur: Vul hier je naam in   
 
     // Initialisatie
