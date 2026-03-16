@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="wbrouwcodeth=device-wbrouwcodeth, initial-scale=1.0">
     <title>Crud</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,7 +10,7 @@
 
     <?php
     // functie: Programma CRUD bieren
-    // auteur: Vul hier je naam in   
+    // auteur: Yusuf
 
     // Initialisatie
     include 'functions.php';
@@ -23,6 +23,3 @@
 
 </body>
 </html>
-
-
-
