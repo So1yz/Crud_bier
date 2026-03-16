@@ -1,8 +1,8 @@
 <?php
     // functie: formulier en database insert fiets
-    // auteur: Vul hier je naam in
+    // auteur: Yusuf
 
-    echo "<h1>Insert Fiets</h1>";
+    echo "<h1>Insert Bier</h1>";
 
     require_once('functions.php');
 	 
@@ -11,24 +11,43 @@
 
         // test of insert gelukt is
         if(insertRecord($_POST) == true){
-            echo "<script>alert('Fiets is toegevoegd')</script>";
+            echo "<script>alert('bier is toegevoegd')</script>";
         } else {
-            echo '<script>alert("Fiets is NIET toegevoegd")</script>';
+            echo '<script>alert("bier is NIET toegevoegd")</script>';
         }
     }
+
+    // Haal bieren op voor dropdown
+    $brouwcodes = getBrouwcodes();
 ?>
 <html>
     <body>
         <form method="post">
 
-        <label for="merk">Merk:</label>
-        <input type="text" id="merk" name="merk" required><br>
+        <label for="biercode">Biercode:</label>
+        <input type="number" id="biercode" name="biercode" required><br>
 
-        <label for="type">Type:</label>
-        <input type="text" id="type" name="type" required><br>
+        <label for="naam">naam:</label>
+        <input type="text" id="naam" name="naam" required><br>
 
-        <label for="prijs">Prijs:</label>
-        <input type="number" id="prijs" name="prijs" required><br>
+        <label for="soort">Soort:</label>
+        <input type="text" id="soort" name="soort" required><br>
+
+        <label for="stijl">Stijl:</label>
+        <input type="text" id="stijl" name="stijl" required><br>
+
+        <label for="alcohol">Alcohol:</label>
+        <input type="text" id="alcohol" name="alcohol" required><br>
+
+        <label for="brouwcode">Choose a brouwnaam:</label>
+        <select id="brouwcode" name="brouwcode" required>
+            <option value="">-- Kies een brouwnaam --</option>
+            <?php foreach($brouwcodes as $bc): ?>
+                <option value="<?php echo $bc['brouwcode']; ?>">
+                    <?php echo $bc['naam']; ?>
+                </option>
+            <?php endforeach; ?>
+        </select><br>
 
         <input type="submit" name="btn_ins" value="Insert">
         </form>
