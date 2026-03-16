@@ -1,5 +1,5 @@
 <?php
-// auteur: Vul hier je naam in
+// auteur: yusuf
 // functie: algemene functies tbv hergebruik
 
 include_once "config.php";
@@ -28,9 +28,9 @@ include_once "config.php";
 
     // Menu-item   insert
     $txt = "
-    <h1>Crud bieren</h1>
+    <h1>Crud Bieren</h1>
     <nav>
-		<a href='insert.php'>Toevoegen nieuwe fiets</a>
+		<a href='insert.php'>Toevoegen nieuwe bier</a>
     </nav><br>";
     echo $txt;
 
@@ -60,15 +60,15 @@ include_once "config.php";
     return $result;
  }
 
- // selecteer de rij van de opgeven id uit de table bieren
- function getRecord($id){
+ // selecteer de rij van de opgeven brouwcode uit de table bieren
+ function getRecord($brouwcode){
     // Connect database
     $conn = connectDb();
 
     // Select data uit de opgegeven table methode prepare
-    $sql = "SELECT * FROM " . CRUD_TABLE . " WHERE id = :id";
+    $sql = "SELECT * FROM " . CRUD_TABLE . " WHERE brouwcode = :brouwcode";
     $query = $conn->prepare($sql);
-    $query->execute([':id'=>$id]);
+    $query->execute([':brouwcode'=>$brouwcode]);
     $result = $query->fetch();
 
     return $result;
@@ -104,13 +104,13 @@ function printCrudTabel($result){
         
         // Wijzig knopje
         $table .= "<td>
-            <form method='post' action='update.php?id=$row[id]' >       
+            <form method='post' action='update.php?brouwcode=$row[brouwcode]' >       
                 <button>Wzg</button>	 
             </form></td>";
 
         // Delete knopje
         $table .= "<td>
-            <form method='post' action='delete.php?id=$row[id]' >       
+            <form method='post' action='delete.php?brouwcode=$row[brouwcode]' >       
                 <button>Verwijder</button>	 
             </form></td>";
 
@@ -130,24 +130,28 @@ function updateRecord($row){
     // Maak een query 
     $sql = "UPDATE " . CRUD_TABLE .
     " SET 
-        merk = :merk, 
-        type = :type, 
-        prijs = :prijs
-    WHERE id = :id
+        naam = :naam, 
+        soort = :soort,
+        stijl = :stijl,
+        alcohol = :alcohol,
+        brouwcode = :brouwcode
+    WHERE biercode = :biercode
     ";
 
     // Prepare query
     $stmt = $conn->prepare($sql);
     // Uitvoeren
     $stmt->execute([
-        ':merk'=>$row['merk'],
-        ':type'=>$row['type'],
-        ':prijs'=>$row['prijs'],
-        ':id'=>$row['id']
+        ':naam'      => $row['naam'],
+        ':soort'     => $row['soort'],
+        ':stijl'     => $row['stijl'],
+        ':alcohol'   => $row['alcohol'],
+        ':brouwcode' => $row['brouwcode_select'],
+        ':biercode'  => $row['brouwcode']
     ]);
 
     // test of database actie is gelukt
-    $retVal = ($stmt->rowCount() == 1) ? true : false ;
+    $retVal = ($stmt->rowCount() >= 1) ? true : false ;
     return $retVal;
 }
 
@@ -157,26 +161,28 @@ function insertRecord($post){
 
     // Maak een query 
     $sql = "
-        INSERT INTO " . CRUD_TABLE . " (merk, type, prijs)
-        VALUES (:merk, :type, :prijs) 
+        INSERT INTO " . CRUD_TABLE . " (biercode, naam, soort, stijl, alcohol, brouwcode)
+        VALUES (:biercode, :naam, :soort, :stijl, :alcohol, :brouwcode) 
     ";
 
     // Prepare query
     $stmt = $conn->prepare($sql);
     // Uitvoeren
     $stmt->execute([
-        ':merk'=>$_POST['merk'],
-        ':type'=>$_POST['type'],
-        ':prijs'=>$_POST['prijs']
+        ':biercode'  => $post['biercode'],
+        ':naam'      => $post['naam'],
+        ':soort'     => $post['soort'],
+        ':stijl'     => $post['stijl'],
+        ':alcohol'   => $post['alcohol'],
+        ':brouwcode' => $post['brouwcode']
     ]);
 
-    
     // test of database actie is gelukt
     $retVal = ($stmt->rowCount() == 1) ? true : false ;
     return $retVal;  
 }
 
-function deleteRecord($id){
+function deleteRecord($brouwcode){
 
     // Connect database
     $conn = connectDb();
@@ -184,19 +190,28 @@ function deleteRecord($id){
     // Maak een query 
     $sql = "
     DELETE FROM " . CRUD_TABLE . 
-    " WHERE id = :id";
+    " WHERE brouwcode = :brouwcode";
 
     // Prepare query
     $stmt = $conn->prepare($sql);
 
     // Uitvoeren
     $stmt->execute([
-    ':id'=>$_GET['id']
+    ':brouwcode'=>$_GET['brouwcode']
     ]);
 
     // test of database actie is gelukt
     $retVal = ($stmt->rowCount() == 1) ? true : false ;
     return $retVal;
+}
+
+// Haal bieren op voor dropdown, gesorteerd op biercode
+function getBrouwcodes(){
+    $conn = connectDb();
+    $sql = "SELECT biercode, naam, brouwcode FROM " . CRUD_TABLE . " ORDER BY biercode ASC";
+    $query = $conn->prepare($sql);
+    $query->execute();
+    return $query->fetchAll();
 }
 
 ?>
